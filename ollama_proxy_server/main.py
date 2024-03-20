@@ -74,9 +74,14 @@ def main():
         def _send_response(self, response):
             self.send_response(response.status_code)
             self.send_header('Content-type', response.headers['content-type'])
+            self.send_header('Stream', True)
             self.end_headers()
-            self.wfile.write(response.content)
-
+            for line in response.iter_lines():
+                if line:
+                    chunk = line + b'\r\n'
+                    self.wfile.write(chunk)
+                self.wfile.flush()
+                    
         def do_GET(self):
             self.log_request()
             self.proxy()
