@@ -80,7 +80,7 @@ def main():
                 if line:
                     chunk = line + b'\r\n'
                     self.wfile.write(chunk)
-                self.wfile.flush()
+            self.wfile.flush()
                     
         def do_GET(self):
             self.log_request()
